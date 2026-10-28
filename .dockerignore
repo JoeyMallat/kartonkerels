@@ -1,0 +1,17 @@
+.git
+.venv
+node_modules
+.wrangler
+__pycache__
+*.pyc
+*.db
+*.db-wal
+*.db-shm
+.secret_key
+.env
+.dev.vars
+backups
+uploads
+tools
+src
+*.ps1

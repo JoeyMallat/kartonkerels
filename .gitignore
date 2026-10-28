@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.db
+*.db-wal
+*.db-shm
+.secret_key
+backups/
+.env
+.dev.vars
+node_modules/
+.wrangler/
+uploads/*
+!uploads/.gitkeep
