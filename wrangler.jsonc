@@ -7,10 +7,12 @@
   "containers": [
     {
       "class_name": "KartonkerelsApp",
-      "image": "./Dockerfile",
-      "instance_type": "basic",
-      // Exactly one instance: SQLite + Litestream must never have two writers.
-      "max_instances": 1
+      "scheduling_policy": "durable_object",
+      // Image and instance size are chosen in src/index.ts. A single Durable Object
+      // ("main") owns the container, so SQLite + Litestream never have two writers.
+      "images": {
+        "app": { "dockerfile": "./Dockerfile" }
+      }
     }
   ],
   "durable_objects": {

@@ -19,6 +19,19 @@ export class KartonkerelsApp extends Container<Env> {
 
   constructor(ctx: DurableObjectState<{}>, env: Env) {
     super(ctx, env);
+    // The durable_object scheduling policy requires the image and size at start();
+    // @cloudflare/containers doesn't pass them, so inject them here.
+    const raw = ctx.container as any;
+    (this as any).container = new Proxy(raw, {
+      get(target, prop) {
+        if (prop === "start") {
+          return (options: Record<string, unknown> = {}) =>
+            target.start({ ...options, image: target.images.app, instance: "standard-1" });
+        }
+        const value = target[prop];
+        return typeof value === "function" ? value.bind(target) : value;
+      },
+    });
     if (env.SLEEP_AFTER) this.sleepAfter = env.SLEEP_AFTER;
     this.envVars = {
       SECRET_KEY: env.SECRET_KEY ?? "",
